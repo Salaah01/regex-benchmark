@@ -74,4 +74,6 @@ fn main() {
     let cli_args = parse_args();
     let (speed_tests, min_max_duration) = calc_results(&cli_args);
     build_graph(&cli_args, speed_tests, min_max_duration);
+    println!("Done! Opening graph.png...");
+    open::that("graph.png").unwrap();
 }
