@@ -20,11 +20,6 @@ pub fn build_rand_str(length: usize) -> String {
         .take(length)
         .map(char::from)
         .collect()
-    // let mut result = String::new();
-    // for _ in 0..length {
-    //     result.push(rand::random::<u8>() as c-har);
-    // }
-    // result
 }
 
 /// Retrieves a certain number of random strings of a given length for testing

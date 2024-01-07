@@ -19,6 +19,9 @@ impl std::str::FromStr for RegexMethod {
     }
 }
 
+/// The command line arguments passed to the program.
+/// Run `regex-speed --help` to see the help message and more information about
+/// the arguments.
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 pub struct Args {
