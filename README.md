@@ -1,10 +1,30 @@
 # Regex Speed
 
+- [Regex Speed](#regex-speed)
+  - [Description](#description)
+  - [Why?](#why)
+  - [Examples](#examples)
+  - [Installation](#installation)
+    - [Linux](#linux)
+    - [Windows](#windows)
+  - [Usage](#usage)
+  - [Contributing](#contributing)
+
 
 ## Description
+
 A utility to help visualise the performance of different regular expressions and how they scale with input size.
 
 Typically, in software development we use Big O notation to describe performance. This is typically someone developers learn when first learning to code and is a great way to get a rough idea of how a program will scale with input size. However, this isn't always easy to do with regular expressions. For the mast majority, regular expressions feel like a black box that either works or doesn't. This tool aims to help visualise the performance of regular expressions and how they scale with input size.
+
+## Why?
+
+A good question to always ask is "why?". Why do we need to know the performance of regular expressions? It just works, right? Well, yes and no. Regular expressions are a very powerful tool, but they can also be very dangerous. It's very easy to write a regular expression that is very inefficient. This can lead to a number of issues:
+
+* **Security** - If a regular expression is inefficient, it can be used to perform a [ReDoS attack](https://owasp.org/www-community/attacks/Regular_expression_Denial_of_Service_-_ReDoS). This is where an attacker can send a malicious string to a server that will cause the server to hang or crash.
+* **Performance** - Can cause a program to run very slowly. This can cause a number of issues such as a poor user experience or a server that is unable to handle the load.
+* **Cost** - Slower performance typically leads to higher costs. In the world of cloud computing, we often just create a AWS lambda function and just forget about it. It's really easy to forget that the costs of lambda functions are based on the amount of time the function is running. If a function is running for longer than it needs to, this can lead to a higher than expected bill.
+* **Learn from Cloudflare's mistake** - [Cloudflare's Regular Expression Denial of Service](https://blog.cloudflare.com/details-of-the-cloudflare-outage-on-july-2-2019/) is a great article to read which explains how a poorly optimised regular expression caused a global outage.
 
 
 ## Examples
@@ -71,9 +91,8 @@ The second expression is the least efficient. We can see a linear growth with a 
 
 The final expression is the most interesting. We can see that it is slower than the first expression, but faster than the second. The biggest difference is that the spread is absolutely massive!
 
-## Usage
 
-### Installation
+## Installation
 
 ### Linux
 
@@ -94,3 +113,16 @@ The final expression is the most interesting. We can see that it is slower than 
     ```powershell
     .\regex-speed.exe --help
     ```
+
+## Usage
+
+One you have installed the binary, you can run it with the `--help` flag to see the available options:
+
+```bash
+./regex-speed --help
+```
+
+
+## Contributing
+
+If you would like to contribute to the project by either reporting a bug, requesting a feature or submitting a pull request, please read the [contributing guide](./CONTRIBUTING.md).
