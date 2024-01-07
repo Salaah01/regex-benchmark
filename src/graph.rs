@@ -15,19 +15,26 @@ fn duration_repr(duration: Duration, units: &TimeUnit) -> i32 {
 pub fn create(
     results: Vec<SpeedTestResult>,
     max_x: i32,
+    min_y: i32,
     max_y: i32,
     units: &TimeUnit,
 ) -> Result<(), Box<dyn std::error::Error>> {
     let root = BitMapBackend::new("graph.png", (640, 480)).into_drawing_area();
     root.fill(&WHITE)?;
 
-    let mut scatter_ctx = ChartBuilder::on(&root)
+    let mut graph = ChartBuilder::on(&root)
         .x_label_area_size(40)
         .y_label_area_size(40)
-        .build_cartesian_2d(0..max_x, 0..max_y)?;
-    scatter_ctx.configure_mesh().draw()?;
+        .margin(20)
+        .caption("Regex Speed", ("sans-serif", 40).into_font())
+        .build_cartesian_2d(0..max_x, min_y..max_y)?;
+    graph
+        .configure_mesh()
+        .x_desc("String Length")
+        .y_desc(format!("Time ({:?})", units))
+        .draw()?;
 
-    scatter_ctx
+    graph
         .draw_series(results.iter().map(|res| {
             let x = res.length as i32;
             let y = duration_repr(res.duration, units);
