@@ -1,42 +1,71 @@
 //! Contains CLI related code.
 
-use clap::{ArgAction, Parser};
+use crate::enums;
 
+use clap::{ArgAction, Parser};
+use enums::RegexMethod;
 use regex::Regex;
+
+impl std::str::FromStr for RegexMethod {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "match" => Ok(RegexMethod::Match),
+            "find" => Ok(RegexMethod::Find),
+            "find_iter" => Ok(RegexMethod::FindIter),
+            _ => Err(format!("{} is not a valid regex method", s)),
+        }
+    }
+}
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 pub struct Args {
-    #[arg(short, long, help = "The regex to test the random strings against")]
+    #[clap(short, long, help = "The regex to test the random strings against")]
     pub regex: Regex,
-    #[arg(
+
+    #[clap(
+        short,
+        long,
+        help = format!("The method to be used to test the regex expression. [options: {}]", RegexMethod::options_as_str()),
+        default_value = "match"
+    )]
+    pub method: RegexMethod,
+
+    #[clap(
         short = 'a',
         long,
         help = "The minimum length of the random strings",
         default_value = "1"
     )]
     pub min_length: usize,
+
     #[clap(short = 'b', long, help = "The maximum length of the random strings")]
     pub max_length: usize,
-    #[arg(
+
+    #[clap(
         short,
         long,
         help = "The step size between the lengths of the random strings",
         default_value = "1"
     )]
     pub step_size: usize,
-    #[arg(
+
+    #[clap(
         short,
         long,
         help = "The number of tests to be carried out for a single length of random string"
     )]
     pub num_tests: usize,
-    #[arg(
+
+    #[clap(
         short = 'R',
         long,
         help = "An optional string that must appear in the random strings"
     )]
     pub required_str: Option<String>,
+
     #[clap(short, long, help = "Verbose output", action=ArgAction::SetTrue)]
     pub verbose: bool,
 }

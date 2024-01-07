@@ -4,6 +4,8 @@
 use regex::Regex;
 use std::time::{Duration, Instant};
 
+use crate::enums::RegexMethod;
+
 /// This struct is used to store the result of a speed test.
 pub struct SpeedTestResult {
     pub length: usize,
@@ -27,16 +29,27 @@ impl SpeedTestResult {
 /// expression.
 /// # Arguments
 /// * `regex` - The regex expression to be tested.
+/// * `search_method` - The method to be used to test the regex expression.
 /// * `text` - The text to be tested against the regex expression.
 ///
 /// # Returns
 /// SpeedTestResult - The result of the speed test.
-pub fn calc_duration_for_text(regex: &Regex, text: &str) -> SpeedTestResult {
-    // regex.find(text);
-    // let new_re = Regex::new(regex.as_str()).unwrap();
-    // new_re.find("a");
+pub fn calc_duration_for_text(
+    regex: &Regex,
+    search_method: RegexMethod,
+    text: &str,
+) -> SpeedTestResult {
     let start = Instant::now();
-    regex.find(text);
+    match search_method {
+        RegexMethod::Match => regex.is_match(text),
+        RegexMethod::Find => regex.find(text).is_some(),
+        RegexMethod::FindIter => {
+            // Iterate over all the matches and just return true as we're not
+            // actually interested in the matches.
+            regex.find_iter(text).for_each(|_| {});
+            true
+        }
+    };
     SpeedTestResult::new(text.len(), start.elapsed())
 }
 
