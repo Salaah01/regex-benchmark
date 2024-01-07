@@ -33,7 +33,7 @@ impl SpeedTestResult {
 /// SpeedTestResult - The result of the speed test.
 pub fn calc_duration_for_text(regex: &Regex, text: &str) -> SpeedTestResult {
     let start = Instant::now();
-    regex.is_match(text);
+    regex.find(text);
     SpeedTestResult::new(text.len(), start.elapsed())
 }
 

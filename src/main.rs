@@ -11,7 +11,6 @@ fn main() {
     let mut max_duration_nanosecs = 0;
     let mut max_duration_microsecs = 0;
     let mut max_duration_millisecs = 0;
-    let mut max_duration_secs = 0;
 
     for length in (cli_args.min_length..=cli_args.max_length).step_by(cli_args.step_size) {
         let rand_strs = regex_speed::rand_str_builder::build_rand_strs(length, cli_args.num_tests);
@@ -26,7 +25,6 @@ fn main() {
                 max_duration_nanosecs = speed_test_result.duration.as_nanos();
                 max_duration_microsecs = speed_test_result.duration.as_micros();
                 max_duration_millisecs = speed_test_result.duration.as_millis();
-                max_duration_secs = speed_test_result.duration.as_secs();
             }
             println!(
                 "{}\t{:?}",
