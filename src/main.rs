@@ -45,12 +45,9 @@ fn main() {
     } else if max_duration_microsecs < 1_000 {
         units = TimeUnit::Microseconds;
         max_y = max_duration_microsecs as i32;
-    } else if max_duration_millisecs < 1_000 {
+    } else {
         units = TimeUnit::Milliseconds;
         max_y = max_duration_millisecs as i32;
-    } else {
-        units = TimeUnit::Seconds;
-        max_y = max_duration_secs as i32;
     }
 
     graph::create(speed_tests, cli_args.max_length as i32, max_y, &units).unwrap();
