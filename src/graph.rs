@@ -26,7 +26,7 @@ pub fn create(
         .x_label_area_size(40)
         .y_label_area_size(40)
         .margin(20)
-        .caption("Regex Speed", ("sans-serif", 40).into_font())
+        .caption("Regex Benchmark", ("sans-serif", 40).into_font())
         .build_cartesian_2d(0..max_x, min_y..max_y)?;
     graph
         .configure_mesh()
