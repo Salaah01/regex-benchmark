@@ -1,35 +1,23 @@
 //! Contains CLI related code.
 
+use clap::Parser;
 use regex::Regex;
-use std::env;
 
+#[derive(Parser, Debug)]
+#[command(author, version, about, long_about = None)]
 pub struct Args {
+    #[arg(short, long)]
     pub regex: Regex,
+    #[arg(short = 'a', long)]
     pub min_length: usize,
-    pub step_size: usize,
+    #[arg(short = 'b', long)]
     pub max_length: usize,
+    #[arg(short, long)]
+    pub step_size: usize,
+    #[arg(short, long)]
     pub num_tests: usize,
+    #[arg(short = 'R', long)]
     pub required_str: Option<String>,
-}
-
-impl Args {
-    pub fn new(
-        regex: Regex,
-        min_length: usize,
-        step_size: usize,
-        max_length: usize,
-        num_tests: usize,
-        required_str: Option<String>,
-    ) -> Args {
-        Args {
-            regex,
-            min_length,
-            step_size,
-            max_length,
-            num_tests,
-            required_str,
-        }
-    }
 }
 
 /// This function is used to retrieve the command line arguments passed to the
@@ -48,31 +36,12 @@ impl Args {
 /// string is less than 1.
 /// * If the upper limit of the length of the random strings is not a number.
 pub fn parse_args() -> Args {
-    let mut args = env::args().skip(1);
-    let regex = Regex::new(&args.next().unwrap()).unwrap();
-    let min_length = args.next().unwrap().parse::<usize>().unwrap();
-    let max_length = args.next().unwrap().parse::<usize>().unwrap();
-    let step_size = args.next().unwrap().parse::<usize>().unwrap();
-    let num_tests = args.next().unwrap().parse::<usize>().unwrap();
-
-    if max_length < 1 {
+    let args = Args::parse();
+    if args.max_length < 1 {
         panic!("max_length must be greater than 0");
     }
-    if num_tests < 1 {
+    if args.num_tests < 1 {
         panic!("num_tests must be greater than 0");
     }
-
-    let mut required_str = None;
-    if let Some(string) = args.next() {
-        required_str = Some(string);
-    }
-
-    Args::new(
-        regex,
-        min_length,
-        step_size,
-        max_length,
-        num_tests,
-        required_str,
-    )
+    args
 }
