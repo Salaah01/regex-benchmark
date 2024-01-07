@@ -37,12 +37,6 @@ pub fn calc_duration_for_text(regex: &Regex, text: &str) -> SpeedTestResult {
     SpeedTestResult::new(text.len(), start.elapsed())
 }
 
-/// This function is used to take the results and create a graph of the Big O
-/// complexity of the regex expression.
-// pub fn create_big_o_graph(speed_tests: Vec<SpeedTestResult>) -> String {
-
-// }
-
 #[cfg(test)]
 mod tests {
     use super::*;
