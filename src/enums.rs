@@ -33,3 +33,24 @@ impl RegexMethod {
         "match, find, find_iter"
     }
 }
+
+#[cfg(test)]
+
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_can_get_display_for_nano_seconds() {
+        assert_eq!(format!("{}", TimeUnit::Nanoseconds), "ns");
+    }
+
+    #[test]
+    fn test_can_get_display_for_micro_seconds() {
+        assert_eq!(format!("{}", TimeUnit::Microseconds), "μs");
+    }
+
+    #[test]
+    fn test_can_get_display_for_milli_seconds() {
+        assert_eq!(format!("{}", TimeUnit::Milliseconds), "ms");
+    }
+}

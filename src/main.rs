@@ -1,22 +1,24 @@
 extern crate regex_speed;
 use regex_speed::calc_regex_speed::{calc_duration_for_text, SpeedTestResult};
-use regex_speed::cli::parse_args;
-use regex_speed::enums::TimeUnit;
+use regex_speed::cli::{parse_args, Args};
+use regex_speed::duration_utils::{get_display_units, MinMaxDuration};
 use regex_speed::graph;
-use regex_speed::rand_str_builder::insert_substring;
+use regex_speed::rand_str_builder::{build_rand_strs, insert_substring};
 
-fn main() {
-    let cli_args = parse_args();
+/// Calculates the speed of the regex for the given CLI arguments.
+///
+/// Arguments:
+/// * `cli_args` - The CLI arguments.
+///
+/// Returns:
+/// * `Vec<SpeedTestResult>` - The results of the speed tests.
+/// * `MinMaxDuration` - The minimum and maximum durations.
+fn calc_results(cli_args: &Args) -> (Vec<SpeedTestResult>, MinMaxDuration) {
     let mut speed_tests: Vec<SpeedTestResult> = Vec::new();
-    let mut min_duration_nanosecs = 0;
-    let mut max_duration_nanosecs = 0;
-    let mut min_duration_microsecs = 0;
-    let mut max_duration_microsecs = 0;
-    let mut min_duration_millisecs = 0;
-    let mut max_duration_millisecs = 0;
+    let mut min_max_duration = MinMaxDuration::new();
 
     for length in (cli_args.min_length..=cli_args.max_length).step_by(cli_args.step_size) {
-        let rand_strs = regex_speed::rand_str_builder::build_rand_strs(length, cli_args.num_tests);
+        let rand_strs = build_rand_strs(length, cli_args.num_tests);
         for rand_str in rand_strs {
             let test_str = if let Some(required_str) = &cli_args.required_str {
                 insert_substring(&rand_str, &required_str)
@@ -28,18 +30,9 @@ fn main() {
             cli_args.regex.captures("z");
             let speed_test_result =
                 calc_duration_for_text(&cli_args.regex, cli_args.method, &test_str);
-            if speed_test_result.duration.as_nanos() > max_duration_nanosecs {
-                max_duration_nanosecs = speed_test_result.duration.as_nanos();
-                max_duration_microsecs = speed_test_result.duration.as_micros();
-                max_duration_millisecs = speed_test_result.duration.as_millis();
-            }
-            if min_duration_nanosecs == 0
-                || speed_test_result.duration.as_nanos() < min_duration_nanosecs
-            {
-                min_duration_nanosecs = speed_test_result.duration.as_nanos();
-                min_duration_microsecs = speed_test_result.duration.as_micros();
-                min_duration_millisecs = speed_test_result.duration.as_millis();
-            }
+            min_max_duration.register_min(speed_test_result.duration);
+            min_max_duration.register_max(speed_test_result.duration);
+
             if cli_args.verbose {
                 println!(
                     "Length: {}\tDuration: {:?}",
@@ -50,30 +43,35 @@ fn main() {
         }
     }
 
-    let units: TimeUnit;
-    let max_y: i32;
-    let min_y: i32;
+    (speed_tests, min_max_duration)
+}
 
-    if max_duration_nanosecs < 1_000 {
-        units = TimeUnit::Nanoseconds;
-        max_y = max_duration_nanosecs as i32;
-        min_y = min_duration_nanosecs as i32;
-    } else if max_duration_microsecs < 1_000 {
-        units = TimeUnit::Microseconds;
-        max_y = max_duration_microsecs as i32;
-        min_y = min_duration_microsecs as i32;
-    } else {
-        units = TimeUnit::Milliseconds;
-        max_y = max_duration_millisecs as i32;
-        min_y = min_duration_millisecs as i32;
-    }
+/// Builds the graph for the given results.
+///
+/// Arguments:
+/// * `cli_args` - The CLI arguments.
+/// * `speed_tests` - The results of the speed tests.
+/// * `min_max_duration` - The minimum and maximum durations.
+fn build_graph(
+    cli_args: &Args,
+    speed_tests: Vec<SpeedTestResult>,
+    min_max_duration: MinMaxDuration,
+) {
+    let units = get_display_units(min_max_duration.max);
+    let (min_y, max_y) = min_max_duration.get_as_units(&units);
 
     graph::create(
         speed_tests,
         cli_args.max_length as i32,
-        min_y,
-        max_y,
+        min_y as i32,
+        max_y as i32,
         &units,
     )
     .unwrap();
+}
+
+fn main() {
+    let cli_args = parse_args();
+    let (speed_tests, min_max_duration) = calc_results(&cli_args);
+    build_graph(&cli_args, speed_tests, min_max_duration);
 }
