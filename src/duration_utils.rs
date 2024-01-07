@@ -31,11 +31,10 @@ impl MinMaxDuration {
     }
 
     pub fn get_as_units(&self, units: &TimeUnit) -> (u128, u128) {
-        return match units {
-            TimeUnit::Nanoseconds => (self.min.as_nanos(), self.max.as_nanos()),
-            TimeUnit::Microseconds => (self.min.as_micros(), self.max.as_micros()),
-            TimeUnit::Milliseconds => (self.min.as_millis(), self.max.as_millis()),
-        };
+        (
+            duration_repr(self.min, units),
+            duration_repr(self.max, units),
+        )
     }
 }
 
@@ -49,4 +48,17 @@ pub fn get_display_units(max_duration: Duration) -> TimeUnit {
     } else {
         TimeUnit::Milliseconds
     };
+}
+
+/// Function to convert duration to a particular time unit.
+///
+/// Arguments:
+/// * `duration` - The duration to be converted.
+/// * `units` - The time unit to convert the duration to.
+pub fn duration_repr(duration: Duration, units: &TimeUnit) -> u128 {
+    match units {
+        TimeUnit::Nanoseconds => duration.as_nanos(),
+        TimeUnit::Microseconds => duration.as_micros(),
+        TimeUnit::Milliseconds => duration.as_millis(),
+    }
 }

@@ -1,17 +1,17 @@
-use std::time::Duration;
+//! Graphing module
 
 use plotters::prelude::*;
 
-use crate::{calc_regex_speed::SpeedTestResult, enums::TimeUnit};
+use crate::{calc_regex_speed::SpeedTestResult, duration_utils::duration_repr, enums::TimeUnit};
 
-fn duration_repr(duration: Duration, units: &TimeUnit) -> i32 {
-    match units {
-        TimeUnit::Nanoseconds => duration.as_nanos() as i32,
-        TimeUnit::Microseconds => duration.as_micros() as i32,
-        TimeUnit::Milliseconds => duration.as_millis() as i32,
-    }
-}
-
+/// Creates the graph for the given results.
+///
+/// Arguments:
+/// * `results` - The results of the speed tests.
+/// * `max_x` - The maximum x value for the x-axis.
+/// * `min_y` - The minimum y value for the y-axis.
+/// * `max_y` - The maximum y value for the y-axis.
+/// * `units` - The time unit to be used for the y-axis and the data itself.
 pub fn create(
     results: Vec<SpeedTestResult>,
     max_x: i32,
@@ -37,7 +37,7 @@ pub fn create(
     graph
         .draw_series(results.iter().map(|res| {
             let x = res.length as i32;
-            let y = duration_repr(res.duration, units);
+            let y = duration_repr(res.duration, units) as i32;
             let color = RED.mix(0.2);
             let size = 2;
             Circle::new((x, y), size, color.filled())
