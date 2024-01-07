@@ -2,6 +2,14 @@
 name = "regex-speed"
 version = "0.1.0"
 edition = "2021"
+authors = ["Salaah Amin"]
+description = "A Rust binary to benchmark regex expressions"
+license = "MIT"
+repository = "https://github.com/Salaah01/regex-benchmark/"
+homepage = "https://github.com/Salaah01/regex-benchmark/"
+readme = "README.md"
+categories = ["development-tools", "command-line-utilities"]
+keywords = ["regex", "benchmark", "cli", "command-line", "utility", "tool"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
