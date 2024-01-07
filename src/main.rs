@@ -1,9 +1,9 @@
-extern crate regex_speed;
-use regex_speed::calc_regex_speed::{calc_duration_for_text, SpeedTestResult};
-use regex_speed::cli::{parse_args, Args};
-use regex_speed::duration_utils::{get_display_units, MinMaxDuration};
-use regex_speed::graph;
-use regex_speed::rand_str_builder::{build_rand_strs, insert_substring};
+extern crate regex_benchmark;
+use regex_benchmark::calc_regex_speed::{calc_duration_for_text, SpeedTestResult};
+use regex_benchmark::cli::{parse_args, Args};
+use regex_benchmark::duration_utils::{get_display_units, MinMaxDuration};
+use regex_benchmark::graph;
+use regex_benchmark::rand_str_builder::{build_rand_strs, insert_substring};
 
 /// Calculates the speed of the regex for the given CLI arguments.
 ///

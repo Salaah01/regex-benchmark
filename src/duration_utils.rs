@@ -33,7 +33,7 @@ impl MinMaxDuration {
     /// Example:
     /// ```
     /// use std::time::Duration;
-    /// use regex_speed::duration_utils::MinMaxDuration;
+    /// use regex_benchmark::duration_utils::MinMaxDuration;
     ///
     /// let mut min_max_duration = MinMaxDuration::new();
     ///
@@ -65,7 +65,7 @@ impl MinMaxDuration {
     /// Example:
     /// ```
     /// use std::time::Duration;
-    /// use regex_speed::duration_utils::MinMaxDuration;
+    /// use regex_benchmark::duration_utils::MinMaxDuration;
     ///
     /// let mut min_max_duration = MinMaxDuration::new();
     ///

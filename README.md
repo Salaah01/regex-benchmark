@@ -1,6 +1,7 @@
-# Regex Speed
+# Regex Benchmark: Performance Visualization Tool for Regular Expressions
 
-- [Regex Speed](#regex-speed)
+
+- [Regex Benchmark: Performance Visualization Tool for Regular Expressions](#regex-benchmark-performance-visualization-tool-for-regular-expressions)
   - [Description](#description)
   - [Why?](#why)
   - [Examples](#examples)

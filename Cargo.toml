@@ -1,6 +1,6 @@
 [package]
-name = "regex-speed"
-version = "0.1.0"
+name = "regex-benchmark"
+version = "0.2.0"
 edition = "2021"
 authors = ["Salaah Amin"]
 description = "A Rust binary to benchmark regex expressions"
