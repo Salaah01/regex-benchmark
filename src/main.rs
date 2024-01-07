@@ -25,7 +25,7 @@ fn main() {
             };
             // The first time the regex is used, it takes longer to execute.
             // So, call it once before the speed test.
-            cli_args.regex.is_match("z");
+            cli_args.regex.captures("z");
             let speed_test_result =
                 calc_duration_for_text(&cli_args.regex, cli_args.method, &test_str);
             if speed_test_result.duration.as_nanos() > max_duration_nanosecs {

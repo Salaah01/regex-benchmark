@@ -31,7 +31,7 @@ pub fn create(
     graph
         .configure_mesh()
         .x_desc("String Length")
-        .y_desc(format!("Time ({:?})", units))
+        .y_desc(format!("Time in {:?} ({})", units, units))
         .draw()?;
 
     graph

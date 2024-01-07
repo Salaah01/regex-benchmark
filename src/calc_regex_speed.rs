@@ -25,6 +25,34 @@ impl SpeedTestResult {
     }
 }
 
+/// This function is to return a function to be called by the test itself. This
+/// allows us to test the actual speed of the regex expression without having
+/// to worry about the overhead of determining which method to use.
+///
+/// # Arguments
+/// * `regex` - The regex expression to be tested.
+/// * `search_method` - The method to be used to test the regex expression.
+/// * `text` - The text to be tested against the regex expression.
+///
+/// # Returns
+/// * A function to be called by the test itself.
+fn method_factory<'a>(
+    regex: &'a Regex,
+    search_method: RegexMethod,
+    text: &'a str,
+) -> impl Fn() -> bool + 'a {
+    move || match search_method {
+        RegexMethod::Match => regex.is_match(text),
+        RegexMethod::Find => regex.find(text).is_some(),
+        RegexMethod::FindIter => {
+            // Iterate over all the matches and just return true as we're not
+            // actually interested in the matches.
+            regex.find_iter(text).for_each(|_| {});
+            true
+        }
+    }
+}
+
 /// This function is used to calculate the speed of a particular regex
 /// expression.
 /// # Arguments
@@ -39,18 +67,12 @@ pub fn calc_duration_for_text(
     search_method: RegexMethod,
     text: &str,
 ) -> SpeedTestResult {
+    let method = method_factory(regex, search_method, text);
+
     let start = Instant::now();
-    match search_method {
-        RegexMethod::Match => regex.is_match(text),
-        RegexMethod::Find => regex.find(text).is_some(),
-        RegexMethod::FindIter => {
-            // Iterate over all the matches and just return true as we're not
-            // actually interested in the matches.
-            regex.find_iter(text).for_each(|_| {});
-            true
-        }
-    };
-    SpeedTestResult::new(text.len(), start.elapsed())
+    method();
+    let duration = start.elapsed();
+    SpeedTestResult::new(text.len(), duration)
 }
 
 #[cfg(test)]
