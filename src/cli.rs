@@ -1,23 +1,44 @@
 //! Contains CLI related code.
 
-use clap::Parser;
+use clap::{ArgAction, Parser};
+
 use regex::Regex;
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 pub struct Args {
-    #[arg(short, long)]
+    #[arg(short, long, help = "The regex to test the random strings against")]
     pub regex: Regex,
-    #[arg(short = 'a', long)]
+    #[arg(
+        short = 'a',
+        long,
+        help = "The minimum length of the random strings",
+        default_value = "1"
+    )]
     pub min_length: usize,
-    #[arg(short = 'b', long)]
+    #[clap(short = 'b', long, help = "The maximum length of the random strings")]
     pub max_length: usize,
-    #[arg(short, long)]
+    #[arg(
+        short,
+        long,
+        help = "The step size between the lengths of the random strings",
+        default_value = "1"
+    )]
     pub step_size: usize,
-    #[arg(short, long)]
+    #[arg(
+        short,
+        long,
+        help = "The number of tests to be carried out for a single length of random string"
+    )]
     pub num_tests: usize,
-    #[arg(short = 'R', long)]
+    #[arg(
+        short = 'R',
+        long,
+        help = "An optional string that must appear in the random strings"
+    )]
     pub required_str: Option<String>,
+    #[clap(short, long, help = "Verbose output", action=ArgAction::SetTrue)]
+    pub verbose: bool,
 }
 
 /// This function is used to retrieve the command line arguments passed to the

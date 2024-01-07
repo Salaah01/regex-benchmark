@@ -40,7 +40,6 @@ pub fn create(
             let y = duration_repr(res.duration, units);
             let color = RED.mix(0.2);
             let size = 2;
-            println!("({}, {})", x, y);
             Circle::new((x, y), size, color.filled())
         }))
         .unwrap();

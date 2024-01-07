@@ -39,10 +39,12 @@ fn main() {
                 min_duration_microsecs = speed_test_result.duration.as_micros();
                 min_duration_millisecs = speed_test_result.duration.as_millis();
             }
-            println!(
-                "{}\t{:?}",
-                speed_test_result.length, speed_test_result.duration
-            );
+            if cli_args.verbose {
+                println!(
+                    "Length: {}\tDuration: {:?}",
+                    speed_test_result.length, speed_test_result.duration
+                );
+            }
             speed_tests.push(speed_test_result);
         }
     }
