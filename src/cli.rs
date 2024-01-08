@@ -4,7 +4,7 @@ use crate::enums;
 
 use clap::{ArgAction, Parser};
 use enums::RegexMethod;
-use regex::Regex;
+use regex_lite::Regex;
 
 impl std::str::FromStr for RegexMethod {
     type Err = String;
