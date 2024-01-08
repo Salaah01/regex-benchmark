@@ -1,7 +1,7 @@
 //! This module is used to calculate the speed of a particular regex
 //! expression.
 
-use regex::Regex;
+use regex_lite::Regex;
 use std::time::{Duration, Instant};
 
 use crate::enums::RegexMethod;

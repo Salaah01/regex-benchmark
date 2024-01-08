@@ -104,10 +104,10 @@ impl MinMaxDuration {
 
 /// Determines the units to be used in the graph base on what the minimum and
 /// maximum durations are.
-/// 
+///
 /// Arguments:
 /// * `max_duration` - The maximum duration.
-/// 
+///
 /// Returns:
 /// * `TimeUnit` - The time unit to be used in the graph.
 pub fn get_display_units(max_duration: Duration) -> TimeUnit {
