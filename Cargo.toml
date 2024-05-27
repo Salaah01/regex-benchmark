@@ -16,6 +16,6 @@ keywords = ["regex", "benchmark", "cli", "command-line", "utility", "tool"]
 [dependencies]
 clap = { version = "4.5.4", features = ["derive"] }
 open = "5.1.2"
-plotters = "0.3.5"
+plotters = "0.3.6"
 rand = "0.8.5"
 regex-lite = "0.1.5"
